@@ -49,7 +49,6 @@ glpi-docker/
 ├── Dockerfile                 # Imagem Docker customizada
 ├── docker-compose.yml         # Orquestração dos serviços
 ├── glpi-start-secure.sh       # Script de inicialização segura
-├── glpi.tgz                   # Arquivo GLPI (renomeado)
 ├── .env                       # Variáveis de ambiente (criar a partir do .env.example)
 ├── .env.example               # Template das variáveis de ambiente
 ├── .gitignore                 # Arquivos ignorados pelo Git
@@ -116,21 +115,8 @@ docker logs glpi_app -f
 
 # Verificar versão atual
 docker exec glpi_app grep "version" /var/www/html/glpi/version
+
 ```
-
-### Upgrade Manual
-
-Para fazer upgrade manual:
-1. Baixe a versão desejada do GLPI
-2. Renomeie para `glpi-upgrade-X.X.X.tgz` (onde X.X.X é a versão)
-3. Copie para o container:
-   ```bash
-   docker cp glpi-upgrade-10.0.18.tgz glpi_app:/tmp/
-   ```
-4. Reinicie o container para executar o upgrade:
-   ```bash
-   docker restart glpi_app
-   ```
 
 ### Volumes Persistentes
 
