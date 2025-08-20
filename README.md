@@ -12,11 +12,6 @@ Este projeto configura o GLPI com as melhores práticas de segurança recomendad
 - **Rollback automático**: Restaura backup em caso de falha no upgrade
 - **Configuração**: Habilitado através da variável `AUTO_UPGRADE=true` no docker-compose.yml
 
-### 🔒 Upgrade Manual
-- **Arquivo de upgrade**: Coloque um arquivo `glpi-upgrade-X.X.X.tgz` na pasta `/tmp` do container
-- **Detecção automática**: O sistema detecta e executa o upgrade automaticamente
-- **Processo seguro**: Mesmo processo de backup e rollback do upgrade automático
-
 ## Melhorias de Segurança Implementadas
 
 ### 1. Diretório Raiz Web Seguro
