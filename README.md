@@ -75,29 +75,14 @@ glpi-docker/
    # IMPORTANTE: Altere as senhas padrão por valores seguros!
    ```
 
-3. **Baixe o GLPI do repositório oficial**:
-   - Acesse: https://github.com/glpi-project/glpi/releases
-   - Baixe a versão desejada (ex: `glpi-10.0.17.tgz`)
 
-4. **Renomeie o arquivo GLPI**:
-   ```bash
-   # Renomeie o arquivo baixado para glpi.tgz (sem a versão no nome)
-   # Exemplo: glpi-10.0.17.tgz → glpi.tgz
-   mv glpi-10.0.17.tgz glpi.tgz
-   ```
 
-5. **Certifique-se de que o arquivo está na pasta do projeto**:
-   ```bash
-   # O arquivo glpi.tgz deve estar na pasta do projeto
-   ls glpi.tgz
-   ```
-
-6. **Construa e inicie os containers**:
+3. **Construa e inicie os containers**:
    ```bash
    docker-compose up --build -d
    ```
 
-6. **Acesse o GLPI**:
+4. **Acesse o GLPI**:
    - URL: http://localhost:9020
    - O GLPI será configurado automaticamente com as práticas de segurança
 
@@ -276,12 +261,6 @@ O sistema agora pode detectar automaticamente novas versões e fazer o upgrade s
 - ✅ Validação do upgrade
 - ✅ Limpeza automática dos arquivos temporários
 
-#### Método 3: Atualização Manual (Tradicional)
-
-1. Baixe a nova versão do GLPI do GitHub
-2. Renomeie o arquivo para `glpi.tgz` (substituindo o anterior)
-3. Reconstrua o container: `docker-compose up --build -d`
-
 **⚠️ Importante sobre Upgrades:**
 - O backup da instalação anterior é mantido em `/tmp/glpi-backup-[timestamp]` dentro do container
 - Os dados do banco de dados são preservados automaticamente
@@ -329,3 +308,50 @@ Para ambientes de produção, considere:
 - [Guia de segurança do GLPI](https://glpi-install.readthedocs.io/en/latest/install/index.html#security)
 - [Docker Best Practices](https://docs.docker.com/develop/dev-best-practices/)
 - [GLPI Releases no GitHub](https://github.com/glpi-project/glpi/releases)
+
+## Sistema de Upgrade Automático
+
+### Configuração de Versões
+
+O sistema oferece duas opções para seleção de versão:
+
+#### Penúltima Versão (Recomendado - Padrão)
+```bash
+USE_LATEST_VERSION=false
+```
+**Vantagens:**
+- ✅ Mais estável e testada pela comunidade
+- ✅ Bugs críticos já foram identificados e corrigidos
+- ✅ Ideal para ambientes de produção
+- ✅ Menor risco de problemas inesperados
+
+#### Última Versão
+```bash
+USE_LATEST_VERSION=true
+```
+**Vantagens:**
+- ✅ Funcionalidades mais recentes
+- ✅ Correções de bugs mais atuais
+- ❌ Pode conter bugs ainda não descobertos
+- ❌ Menos testada em ambientes reais
+
+### Processo Automático
+
+1. **Verificação**: O sistema consulta a API do GitHub para versões disponíveis
+2. **Comparação**: Compara a versão instalada com a versão alvo
+3. **Download**: Baixa automaticamente a versão necessária
+4. **Backup**: Cria backup completo da instalação atual
+5. **Upgrade**: Extrai e configura a nova versão
+6. **Atualização**: Executa `php bin/console db:update`
+7. **Verificação**: Confirma que o upgrade foi bem-sucedido
+
+### Logs e Monitoramento
+
+Todos os processos são logados e podem ser acompanhados:
+```bash
+# Visualizar logs do container
+docker-compose logs -f glpi
+
+# Logs específicos do upgrade
+docker exec glpi-container tail -f /var/log/glpi/upgrade.log
+```
