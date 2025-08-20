@@ -1,0 +1,43 @@
+services:
+  mariadb:
+    image: mariadb:10.7
+    container_name: glpi_mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    restart: always
+
+  glpi:
+    build: .
+    container_name: glpi_app
+    ports:
+      - "${GLPI_PORT:-9020}:80"
+    environment:
+      - MYSQL_HOST=mariadb
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - TIMEZONE=${TIMEZONE}
+      - AUTO_UPGRADE=true
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    volumes:
+      - glpi_data:/var/www/html/glpi
+      - glpi_files:/var/lib/glpi/files
+      - glpi_config:/etc/glpi
+      - glpi_logs:/var/log/glpi
+    depends_on:
+      - mariadb
+    restart: unless-stopped
+
+volumes:
+  mariadb_data:
+  glpi_data:
+  glpi_files:
+  glpi_config:
+  glpi_logs:

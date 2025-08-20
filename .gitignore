@@ -1,0 +1,20 @@
+# Arquivos GLPI
+*.tgz
+glpi*.tgz
+*glpi*.tgz
+glpi-upgrade*.tgz
+*glpi-upgrade*.tgz
+
+# Arquivos de configuração sensíveis
+.env
+
+# Logs do Docker
+*.log
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# Arquivos de backup
+*.bak
+*.backup
