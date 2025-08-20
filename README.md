@@ -59,7 +59,6 @@ glpi-docker/
 
 ### Pré-requisitos
 - Docker e Docker Compose instalados
-- Arquivo GLPI baixado e renomeado
 
 ### Instalação
 
@@ -73,8 +72,6 @@ glpi-docker/
    # Edite o arquivo .env com suas configurações
    # IMPORTANTE: Altere as senhas padrão por valores seguros!
    ```
-
-
 
 3. **Construa e inicie os containers**:
    ```bash
